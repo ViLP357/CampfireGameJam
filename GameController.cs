@@ -1,5 +1,8 @@
 using UnityEngine;
 using TMPro;
+using System;
+using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
 public class GameController : MonoBehaviour
 {
     public int roskatMukana = 0;
@@ -11,6 +14,9 @@ public class GameController : MonoBehaviour
     public GameObject vesipullo;
     public TMP_Text pisteTeksti; 
     public GameObject alkuvalikko;
+    public TMP_Text aikaTeksti;
+    //private float aloitusaika;
+    private float viimeAika;
     void Awake()
     {
         instanssi = this;
@@ -19,6 +25,7 @@ public class GameController : MonoBehaviour
     {   
         Time.timeScale = 0;
         alkuvalikko.SetActive(true);
+        
         //Random random = new Random();
         for (int i = 0; i < roskaPaikat.Length; i++) {
             Transform kohta = roskaPaikat[i];
@@ -34,16 +41,41 @@ public class GameController : MonoBehaviour
             }
             //Instantiate(stopPlace, kohta.position, kohta.rotation);
         }   
+        ///aloitusaika = Time.time;
     }
     void Update()
     {
         //Debug.Log("mukana " + roskatMukana);
-        pisteTeksti.text = "Kerätyt roskat " + roskatRoskiksessa;
+        //aikaTeksti.text = muunnaTekstiksi(Time.time-aloitusaika);
+        pisteTeksti.text =  roskatRoskiksessa.ToString();
+
+        int nykyinenAika = Mathf.FloorToInt(Time.timeSinceLevelLoad);
+        if (nykyinenAika != viimeAika) 
+        {
+            String muunnettuAika = muunnaTekstiksi(nykyinenAika);
+            aikaTeksti.text = muunnettuAika;
+           
+            viimeAika = nykyinenAika;
+        }
     }
     public void aloitaPeli()
     {
         Time.timeScale = 1;
         alkuvalikko.SetActive(false);
 
+    }
+
+    private string muunnaTekstiksi(int aika) {
+        int tunnit = aika / 3600;
+        int minuutit = (aika % 3600) / 60;
+        int sekunnit = aika % 60;
+        if (tunnit > 0) 
+            return string.Format("{0:D2}:{1:D2}:{2:D2}", tunnit, minuutit, sekunnit);
+        return string.Format("{0:D2}:{1:D2}", minuutit, sekunnit);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("MainScene");
     }
 }

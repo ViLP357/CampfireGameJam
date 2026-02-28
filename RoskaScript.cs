@@ -10,6 +10,8 @@ public class RoskaScript : MonoBehaviour
     public float rotationSpeed = 10f;  
     private float lisa = 0;
     public static RoskaScript instanssi;
+    int op;
+    //int op2;
     void Start()
     {
         instanssi = this;
@@ -21,7 +23,8 @@ public class RoskaScript : MonoBehaviour
     {
         if (player != null && seuraa)
         {
-            offset = new Vector3(0, 1, -1-lisa);
+
+            offset = new Vector3(op, 1, -2-lisa);
             // 1. Liikutaan kohti offsetia pelaajan suhteen
             Vector3 targetPosition = player.position + (player.forward * offset.z) + (player.right * offset.x) + (Vector3.up * offset.y);
             transform.position = Vector3.Lerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
@@ -36,7 +39,9 @@ public class RoskaScript : MonoBehaviour
     {
         seuraa = true;  
         //Debug.Log("Seurataan pian");
-        lisa =  (float) (GameController.instanssi.roskatMukana*0.5);
+        lisa =  (float) (GameController.instanssi.roskatMukana*0.8);
+            op = GameController.instanssi.roskatMukana%2;
+            //op2 = GameController.instanssi.roskatMukana%2;
     }
 
     

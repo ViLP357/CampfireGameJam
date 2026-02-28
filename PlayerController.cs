@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
         
         Debug.Log("Aloitetaan");
         transform.position = alkupaikka.transform.position;
+        transform.rotation = alkupaikka.transform.rotation;
         
     }
 
