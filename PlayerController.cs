@@ -73,7 +73,11 @@ public class PlayerController : MonoBehaviour
                     Destroy(g);
                 }
                 roskat =  new List<GameObject>();;
-            }
-            
+            } else if (collision.transform.tag=="oilspray")
+                {
+                    Debug.Log("Kuolee");
+
+                    GameController.instanssi.Kuolema();
+                }
     }
 }

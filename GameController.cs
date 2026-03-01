@@ -10,10 +10,13 @@ public class GameController : MonoBehaviour
     public static GameController instanssi;
 
     public Transform[] roskaPaikat;
+    public Transform[] timanttiPaikat;
     public GameObject muovipussi;
+    public GameObject timantti;
     public GameObject vesipullo;
     public TMP_Text pisteTeksti; 
     public GameObject alkuvalikko;
+    public GameObject kuolemavalikko;
     public TMP_Text aikaTeksti;
     //private float aloitusaika;
     private float viimeAika;
@@ -25,6 +28,7 @@ public class GameController : MonoBehaviour
     {   
         Time.timeScale = 0;
         alkuvalikko.SetActive(true);
+        kuolemavalikko.SetActive(false);
         
         //Random random = new Random();
         for (int i = 0; i < roskaPaikat.Length; i++) {
@@ -41,6 +45,11 @@ public class GameController : MonoBehaviour
             }
             //Instantiate(stopPlace, kohta.position, kohta.rotation);
         }   
+        for (int i =0; i<timanttiPaikat.Length;i++)
+        {
+            Transform kohta = timanttiPaikat[i];
+            Instantiate(timantti, kohta.position, kohta.rotation);
+        }
         ///aloitusaika = Time.time;
     }
     void Update()
@@ -76,6 +85,12 @@ public class GameController : MonoBehaviour
 
     public void RestartGame()
     {
+        Time.timeScale = 1;
         SceneManager.LoadScene("MainScene");
+    }
+    public void Kuolema()
+    {
+        Time.timeScale = 0;
+        kuolemavalikko.SetActive(true);
     }
 }
