@@ -17,9 +17,13 @@ public class GameController : MonoBehaviour
     public TMP_Text pisteTeksti; 
     public GameObject alkuvalikko;
     public GameObject kuolemavalikko;
+    public GameObject voittovalikko;
     public TMP_Text aikaTeksti;
+    public TMP_Text voittoaika;
     //private float aloitusaika;
     private float viimeAika;
+    float viive = 0;
+    bool voitto = false;
     void Awake()
     {
         instanssi = this;
@@ -29,6 +33,7 @@ public class GameController : MonoBehaviour
         Time.timeScale = 0;
         alkuvalikko.SetActive(true);
         kuolemavalikko.SetActive(false);
+        voittovalikko.SetActive(false);
         
         //Random random = new Random();
         for (int i = 0; i < roskaPaikat.Length; i++) {
@@ -57,6 +62,13 @@ public class GameController : MonoBehaviour
         //Debug.Log("mukana " + roskatMukana);
         //aikaTeksti.text = muunnaTekstiksi(Time.time-aloitusaika);
         pisteTeksti.text =  roskatRoskiksessa.ToString();
+        
+        if (Time.time-viive >= 1.0f && voitto == true)
+        {
+            Time.timeScale = 0;
+            voittovalikko.SetActive(true);
+        } 
+        //Debug.Log(voitto + " " + (Time.time-viive).ToString() + " " +viive);
 
         int nykyinenAika = Mathf.FloorToInt(Time.timeSinceLevelLoad);
         if (nykyinenAika != viimeAika) 
@@ -65,6 +77,13 @@ public class GameController : MonoBehaviour
             aikaTeksti.text = muunnettuAika;
            
             viimeAika = nykyinenAika;
+        }
+        if (roskatRoskiksessa >= roskaPaikat.Length && voitto == false)
+        {
+            Debug.Log("VOitetaan");
+            voittoaika.text = aikaTeksti.text;
+            viive = Time.time;
+            voitto = true;
         }
     }
     public void aloitaPeli()

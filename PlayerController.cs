@@ -14,15 +14,15 @@ public class PlayerController : MonoBehaviour
     private List<GameObject> roskat = new List<GameObject>();
     //GameController gameController;
     private float viimeRoska = 0;
+    //public AudioClip clip;
+    AudioSource ääni;
+
     void Start()
-    {
-        //gameController = FindObjectOfType<GameController>();
-        //GameController.instanssi.roskatMukana += 1;
-        
+    {   
         Debug.Log("Aloitetaan");
         transform.position = alkupaikka.transform.position;
-        transform.rotation = alkupaikka.transform.rotation;
-        
+        transform.rotation = alkupaikka.transform.rotation; 
+        ääni = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -47,10 +47,9 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     
     {
-        //Debug.Log("collsion");
-        if (collision.transform.tag == "roska" && Time.time-viimeRoska > 0.5)
+        if (collision.transform.tag == "roska" && Time.time-viimeRoska > 0.8)
         {
-            Debug.Log("Uusi roska");
+            //Debug.Log("Uusi roska");
             GameObject otherCollider = collision.gameObject;
 
             RoskaScript target = otherCollider.GetComponent<RoskaScript>();
@@ -64,6 +63,7 @@ public class PlayerController : MonoBehaviour
         } else if (collision.transform.tag == "roskis")
             {
                 //Debug.Log("Roskis");
+                //ääni.Play();
                 //GameController.instanssi.roskatRoskiksessa += GameController.instanssi.roskatMukana;
                 GameController.instanssi.roskatMukana = 0;
                 //Debug.Log("roskia " +roskat.le);
@@ -73,11 +73,13 @@ public class PlayerController : MonoBehaviour
                     Destroy(g);
                 }
                 roskat =  new List<GameObject>();;
-            } else if (collision.transform.tag=="oilspray")
+            } else if (collision.transform.tag=="oilspray") {
+                //Debug.Log("Kuolee");
+                GameController.instanssi.Kuolema();
+            } else if (collision.transform.tag == "timantti")
                 {
-                    Debug.Log("Kuolee");
-
-                    GameController.instanssi.Kuolema();
+                Destroy(collision.gameObject);
+                ääni.Play();
                 }
     }
 }
