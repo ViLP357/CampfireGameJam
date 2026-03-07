@@ -3,6 +3,7 @@ using TMPro;
 using System;
 using Random = UnityEngine.Random;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 public class GameController : MonoBehaviour
 {
     public int roskatMukana = 0;
@@ -42,11 +43,11 @@ public class GameController : MonoBehaviour
             int n = Random.Range(0,2); //0-1
             if (n==0) {
                 Instantiate(muovipussi, kohta.position, kohta.rotation);
-                Debug.Log("muovipussi lisätty");
+                //Debug.Log("muovipussi lisätty");
             } else if(n==1)
             {   
                 Instantiate(vesipullo, kohta.position, kohta.rotation);
-                Debug.Log("vesipullo lisätty");
+                //Debug.Log("vesipullo lisätty");
             }
             //Instantiate(stopPlace, kohta.position, kohta.rotation);
         }   
@@ -61,16 +62,22 @@ public class GameController : MonoBehaviour
     {
         //Debug.Log("mukana " + roskatMukana);
         //aikaTeksti.text = muunnaTekstiksi(Time.time-aloitusaika);
+        int nykyinenAika = Mathf.FloorToInt(Time.timeSinceLevelLoad);
         pisteTeksti.text =  roskatRoskiksessa.ToString();
         
         if (Time.time-viive >= 1.0f && voitto == true)
         {
             Time.timeScale = 0;
             voittovalikko.SetActive(true);
+            //Scores.instanssi.score = nykyinenAika;
+            PlayerPrefs.SetInt("LatestScore", nykyinenAika);
+            Debug.Log("Pisteet" + Scores.instanssi.score );
+            voitto = false;
+            
         } 
         //Debug.Log(voitto + " " + (Time.time-viive).ToString() + " " +viive);
 
-        int nykyinenAika = Mathf.FloorToInt(Time.timeSinceLevelLoad);
+       
         if (nykyinenAika != viimeAika) 
         {
             String muunnettuAika = muunnaTekstiksi(nykyinenAika);
@@ -93,7 +100,7 @@ public class GameController : MonoBehaviour
 
     }
 
-    private string muunnaTekstiksi(int aika) {
+    public string muunnaTekstiksi(int aika) {
         int tunnit = aika / 3600;
         int minuutit = (aika % 3600) / 60;
         int sekunnit = aika % 60;
