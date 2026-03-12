@@ -16,12 +16,13 @@ public class Scores : MonoBehaviour
     public TMP_InputField pelaajanimi;
 
     int highScore = 100000;
-    String highScoreName = "";
+    String highScoreName = "----";
     public int score = 0;
     //List<string> names = new List<string>();
     //List<string> scores = new List<string>();
     void Start()
     {
+        //PlayerPrefs.deleteAll();
         instanssi = this;
         //pelaajanimi.text = "";
         haePisteet();
@@ -39,7 +40,7 @@ public class Scores : MonoBehaviour
         Debug.Log("asetus");
         score = PlayerPrefs.GetInt("LatestScore");
         Debug.Log(score + " " + highScore);
-        if (score < highScore && pelaajanimi.text != "")
+        if ((score > 0 )&&( highScore == 0|| score < highScore )&& pelaajanimi.text != "")
         {
             PlayerPrefs.SetInt("Highscore", score);
             PlayerPrefs.SetString("HighscoreName", pelaajanimi.text);
@@ -55,7 +56,14 @@ public class Scores : MonoBehaviour
         Debug.Log("Haku");
         highScore = PlayerPrefs.GetInt("Highscore");
         highScoreName = PlayerPrefs.GetString("HighscoreName");
-        nimet[0].text = highScoreName;
+        if (highScoreName.Length > 0)
+        {
+            nimet[0].text = highScoreName;
+        } else
+        {
+            nimet[0].text = "----";
+        }
+        
         pisteet[0].text = GameController.instanssi.muunnaTekstiksi(highScore);
 
         //for (int i = 0; i<5;i++)
